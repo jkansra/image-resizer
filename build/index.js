@@ -18,7 +18,7 @@ app.get('/image-resize', (req, res) => {
     const heightInNumber = Number(height);
     // Check for valid dimensions
     if (isNaN(widthInNumber) || isNaN(heightInNumber)) {
-        res.send('Please enter valid dimensions');
+        res.send('Please enter numeric dimensions');
         return;
     }
     if (widthInNumber <= 0 || heightInNumber <= 0) {
@@ -36,3 +36,4 @@ app.get('/image-resize', (req, res) => {
         }
     });
 });
+exports.default = app;
