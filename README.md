@@ -13,6 +13,8 @@ For building the project: `npm run build`
 
 For running the build folder( containing .js files): `node build/index`
 
+For running the unit tests: `npm run test`
+
 
 # API endpoint 
 
