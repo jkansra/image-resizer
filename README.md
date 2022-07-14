@@ -31,4 +31,4 @@ To run the API on your local machine,
 
 1. All the linting errors have been resolved. They can be verified using the script : `npm run lint`.
 2. Also, prettier package has been used for formatting purposes. Script : `npm run prettier`.
-3. Additional Libraries used: `sharp` and `image-size`
+3. Additional Libraries used: `sharp`

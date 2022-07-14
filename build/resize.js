@@ -15,25 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sharp_1 = __importDefault(require("sharp"));
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
-const image_size_1 = __importDefault(require("image-size"));
 const resizeImage = (fileName, width, height) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const originalPath = path_1.default.join(__dirname, `../assets/full/${fileName}.jpeg`);
-        const resizedPath = path_1.default.join(__dirname, `../assets/thumb/${fileName}-resized.jpeg`);
+        const resizedPath = path_1.default.join(__dirname, `../assets/thumb/${fileName}-${width}-${height}.jpeg`);
         if (!fs_1.default.existsSync(originalPath)) {
             return 'No file exists with this name';
         }
         // Update image if different dimensions are passed for same image
         // Fetching dimensions using image-size package
-        (0, image_size_1.default)(resizedPath, (error, dimensions) => {
-            if (fs_1.default.existsSync(resizedPath) &&
-                (dimensions === null || dimensions === void 0 ? void 0 : dimensions.width) === width &&
-                dimensions.height === height) {
-                console.log('Resized File Already Exists');
-                return resizedPath;
-            }
-        });
+        if (fs_1.default.existsSync(resizedPath)) {
+            console.log('Resized File Already Exists');
+            return resizedPath;
+        }
         yield (0, sharp_1.default)(originalPath).resize(width, height).toFile(resizedPath);
+        console.log('File Created Successfully!');
         return resizedPath;
     }
     catch (error) {

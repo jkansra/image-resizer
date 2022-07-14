@@ -1,7 +1,6 @@
 import sharp from 'sharp';
 import path from 'path';
 import fs from 'fs';
-import sizeOf from 'image-size';
 
 const resizeImage = async (
   fileName: string,
@@ -15,24 +14,19 @@ const resizeImage = async (
     );
     const resizedPath: string = path.join(
       __dirname,
-      `../assets/thumb/${fileName}-resized.jpeg`
+      `../assets/thumb/${fileName}-${width}-${height}.jpeg`
     );
     if (!fs.existsSync(originalPath)) {
       return 'No file exists with this name';
     }
     // Update image if different dimensions are passed for same image
     // Fetching dimensions using image-size package
-    sizeOf(resizedPath, (error, dimensions) => {
-      if (
-        fs.existsSync(resizedPath) &&
-        dimensions?.width === width &&
-        dimensions.height === height
-      ) {
-        console.log('Resized File Already Exists');
-        return resizedPath;
-      }
-    });
+    if (fs.existsSync(resizedPath)) {
+      console.log('Resized File Already Exists');
+      return resizedPath;
+    }
     await sharp(originalPath).resize(width, height).toFile(resizedPath);
+    console.log('File Created Successfully!');
     return resizedPath;
   } catch (error) {
     console.log(error);
