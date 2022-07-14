@@ -14,12 +14,18 @@ app.get('/image-resize', (req, res) => {
     const fileName = req.query.fileName;
     const width = req.query.width;
     const height = req.query.height;
+    const widthInNumber = Number(width);
+    const heightInNumber = Number(height);
     // Check for valid dimensions
-    if (isNaN(Number(width)) || isNaN(Number(height))) {
+    if (isNaN(widthInNumber) || isNaN(heightInNumber)) {
         res.send('Please enter valid dimensions');
         return;
     }
-    (0, resize_1.default)(fileName, Number(width), Number(height)).then((value) => {
+    if (widthInNumber <= 0 || heightInNumber <= 0) {
+        res.send('Please enter valid dimensions');
+        return;
+    }
+    (0, resize_1.default)(fileName, widthInNumber, heightInNumber).then((value) => {
         const path = value;
         try {
             res.sendFile(path);
