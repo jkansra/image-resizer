@@ -2,6 +2,7 @@ import path from 'path';
 import supertest from 'supertest';
 import app from '../index';
 import fs from 'fs';
+import resizeImage from '../resize';
 const request = supertest(app);
 
 describe('Test if the endpoint is running', () => {
@@ -40,22 +41,19 @@ describe('Test success if fileName getting resized first time', () => {
 });
 
 describe('Test success if image is getting processed', () => {
+  it('get the processed image',() =>{
+  const fileName : string = "icelandwaterfall";
+  const width : number = 500;
+  const height: number = 500;  
   const resizedPath: string = path.join(
     __dirname,
-    `../../assets/thumb/icelandwaterfall-500-500.jpeg`
+    `../assets/thumb/${fileName}-${width}-${height}.jpeg`
   );
-  it('get the processed image', async function () {
-    fs.unlinkSync(resizedPath);
-    const response = await request
-      .get('/image-resize')
-      .query({ height: 500, width: 500, fileName: 'icelandwaterfall' });
-    try {
-      if (fs.existsSync(resizedPath)) {
-        expect(response.status).toBe(200);
-        expect(response.type).toBe('image/jpeg');
-      }
-    } catch (err) {
-      console.error(err);
-    }
+  if(fs.existsSync(resizedPath)){
+  fs.unlinkSync(resizedPath);
+  }
+  expect(async () => {
+      await resizeImage(fileName, width, height);
+  }).not.toThrow();
   });
 });
